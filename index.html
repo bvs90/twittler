@@ -3,7 +3,44 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <style>
+      .wrapper {
+        width: 1000px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .main-content {
+        width: 50%;
+        float: left;
+      }
+      .main-content div {
+        margin: 7px 0;
+      }
+      .following {
+        float: right;
+      }
+      #user-tweets {
+        width: 600px;
+        height: 600px;
+        margin: 0 auto;
+        overflow: auto;
+        border: 1px solid black;
+        border-radius: 10px;
+        position: absolute;
+        top: 100px;
+        left: 200px;
+        opacity: 1;
+      }
+      #close {
+        float: right;
+        margin: 7px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
+  
   <body>
     <div class="wrapper">
       <header>
@@ -11,6 +48,22 @@
       </header>
 
       <div class="main-content">
+
+      </div>
+
+      <div class="following">
+        <h2>You are following:</h2>
+        <ul class="user-list">
+          <li><a href="#" id="shawndrost">@shawndrost</a></li>
+          <li><a href="#" id="douglascalhoun">@douglascalhoun</a></li>
+          <li><a href="#" id="sharksforcheap">@sharksforcheap</a></li>
+          <li><a href="#" id="mracus">@mracus</a></li>
+        </ul>
+      </div>
+
+      <div id="user-tweets" class="hidden">
+        <button id="close">Close</button>
+        <div class="container"></div>
       </div>
 
     </div> <!-- /wrapper -->
@@ -22,9 +75,12 @@
         $content.html('');
 
         var index = streams.home.length - 1;
+        //var index = streams.users.shawndrost.length - 1;  
+        
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
+          //var tweet = streams.users.shawndrost[index];
+          var $tweet = $('<div class="' + tweet.user + '"></div>');
 
           var dateStamp = function() {
             var d = tweet.created_at;
@@ -33,17 +89,64 @@
             return days[d.getDay()] + " : " + d.toLocaleTimeString();
           }
 
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + 'Twittled on: ' + dateStamp());
+          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+
+          var $date = $('<br>Twittled on: ' + dateStamp() + '</br>');
           $tweet.appendTo($content);
+          $date.appendTo($tweet);
           index -= 1;
         }
+      }
+
+      var showUserTweets = function(person) {
+        $('#user-tweets').removeClass('hidden');
+
+        var $content = $('#user-tweets .container');
+        $content.html('');
+
+        var index = streams.users[person].length - 1;  
+        
+        while(index >= 0){
+          var tweet = streams.users[person][index];
+          var $tweet = $('<div class="' + tweet.user + '"></div>');
+
+          var timeStamp = function() {
+            var d = tweet.created_at;
+            var days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
+
+            return days[d.getDay()] + " : " + d.toLocaleTimeString();
+          }
+
+          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+
+          var $date = $('<br>Twittled on: ' + timeStamp() + '</br>');
+          $tweet.appendTo($content);
+          $date.appendTo($tweet);
+          index -= 1;
+
+        }
+
+        //setInterval(function(person) { showUserTweets(person) } ,1000);
+
       }
 
       $(document).ready(function(){
         showTweets();
         setInterval(showTweets, 1000);
+
+        $('.user-list a').on('click', function() {
+          event.preventDefault();
+          var person = $(this).attr('id');
+          showUserTweets(person);        
+        });
+
+        // close pop-up box 
+        $('#close').on('click', function() {
+          $('#user-tweets').addClass('hidden');
+          clearInterval(userUpdate);
+        })
       });
-      
+
     </script>
   </body>
 </html>
