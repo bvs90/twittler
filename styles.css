@@ -53,8 +53,8 @@ h3 {
   background-color: #fff;
   margin-bottom: 12px;
   padding: 12px 10px;
+  color: #333;
 }
-
 .following {
   width: 300px;
   float: right;
@@ -67,13 +67,21 @@ h3 {
   background-color: #fff;
   padding: 12px 10px;
   float: right;
-  width: 300px;
+  width: 250px;
 }
 .user-list li {
   list-style: none;
+  margin-bottom: 7px;
+}
+.user-list li:last-child {
+  margin-bottom: 0;
 }
 .user-list li a {
+  color: #333;
   text-decoration: none;
+}
+.user-list li a:hover {
+  color: #568BE8;
 }
 #user-tweets {
   width: 600px;
@@ -88,7 +96,7 @@ h3 {
 #user-tweets .container {
   clear: both;
   overflow: auto;
-  height: 485px;
+  height: 465px;
 }
 #user-tweets .container > div {
   margin: 12px 0;
@@ -96,6 +104,15 @@ h3 {
 button {
   float: left;
   margin-bottom: 7px;
+  background-color: #04a0dc;
+  border: none;
+  padding: 5px 9px;
+  border-radius: 7px;
+  color: #fff;
+}
+button:hover {
+  background-color: #63d1fb;
+  color: #333;
 }
 .hidden {
   display: none;
@@ -108,4 +125,7 @@ footer {
   background-color: #04a0dc;
   border-top: 1px solid #eaeaea;
   padding: 20px;  
+}
+footer p {
+  color: #e3e9ee;
 }
